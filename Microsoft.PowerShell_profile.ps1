@@ -13,8 +13,10 @@ Set-Alias -Name cls -Value Clear-Host
 
 #######useful functions
 
-#list all current versions for languages and programs installed
-# if there is a program to add, add it to $progs
+<# list all current versions for languages and programs installed
+	#if there is a program to add, add it to $progs
+## @pre these programs exist in their current locations
+#>
 function versions{
 	$progs =	"C:\Program Files\Microsoft\jdk-11.0.16.101-hotspot\bin\javac.exe",
 				"C:\Program Files\Microsoft\jdk-11.0.16.101-hotspot\bin\java.exe",
@@ -30,17 +32,19 @@ function versions{
 
 }
 
-<#
-function mwdgr([string]$repo){
-	Invoke-Expression("git init")
-	Invoke-Expression("git remote add origin " + $repo)
-
-	$files = Get-ChildItem
-	foreach ($file_name in $files){
-		Invoke-Expression("git add " + $file_name)
-	}
-
-	Invoke-Expression("git commit -am \"initial commit\"")
-	Invoke-Expression("git push -u -f origin main")
-}
+<# turn current working directory into remote git repo and sync/link with online version
+	#if git init is defaulting to 'master' in your local repository, run <git config --global init.defaultBranch main> in your cli
+		#this changes the default name git assigns to your local branch from master to main
+## @pre1 an existing repo on github.com to push to
+## @post local repo is created and linked to an existing online repo
+## @param $repo is the SSH clone link of online repo
 #>
+function mwdgr([string]$repo){
+	$git_prog = "C:\Program Files\Git\cmd\git.exe"
+	& $git_prog init
+	& $git_prog remote add origin $repo
+	& $git_prog add -A
+	& $git_prog commit -am "inital commits"
+	& $git_prog pull --rebase origin main
+	& $git_prog push -u -f origin main
+}
