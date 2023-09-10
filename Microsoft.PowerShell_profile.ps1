@@ -7,9 +7,6 @@ oh-my-posh init pwsh --config 'C:\Users\ommar\AppData\Local\Programs\oh-my-posh\
 
 #######list of aliases I like using
 
-#clear cli screen
-Set-Alias -Name cls -Value Clear-Host
-
 
 ## Useful functions
 
@@ -21,7 +18,7 @@ Set-Alias -Name cls -Value Clear-Host
 	{
 		$progs =	"C:\Program Files\Microsoft\jdk-11.0.16.101-hotspot\bin\javac.exe",
 					"C:\Program Files\Microsoft\jdk-11.0.16.101-hotspot\bin\java.exe",
-					"C:\Users\ommar\AppData\Local\Programs\Python\Python311\python.exe",
+					"~\AppData\Local\Programs\Python\Python311\python.exe",
 					"C:\Program Files\Git\cmd\git.exe",
 					"C:\msys64\mingw64\bin\gcc.exe",
 					"C:\msys64\mingw64\bin\g++.exe",
@@ -46,12 +43,13 @@ Set-Alias -Name cls -Value Clear-Host
 		& $git_prog init
 		& $git_prog remote add origin $repo
 		& $git_prog add -A
-		& $git_prog commit -am "inital commits"
+		& $git_prog commit -am "initial commits"
 		& $git_prog pull --rebase origin main
 		& $git_prog push -u origin main
 	}
 
-	<# take coding preamble and create a file with given name
+	<# take coding preamble and create a file with given name,
+	##	default: create a new template consisting of the default template in the working directory
 	## @pre		: template txt file exists properly formatted with <date> and <file_name> to replace
 					no conditionals/safety checks because this is for personal use and I'm feeling particularly lazy today
 	## @param	: string, the name of the file to be created with the template
@@ -59,8 +57,12 @@ Set-Alias -Name cls -Value Clear-Host
 					default value is a path to ~\Documents
 	## @post	: create a file with given name in the working directory
 	#>
-	function authoredTemplate([string]$file_name, [string]$templateFile = "C:\Users\ommar\Documents\")
+	function authoredTemplate([string]$file_name = ".\template.txt", [string]$templateFile = "~\Documents\")
 	{
+		if ($templateFile -eq "CSCI235")
+		{
+			$templateFile = "~\Documents\ALL-CS\Hunter-CSCI\CSCI-235\"
+		}
 		$templateFile += "template.txt"
 		[string] $templateText = Get-Content -Path $templateFile -Raw
 		[string] $date = Get-Date -Format "MM/dd/yyyy"
