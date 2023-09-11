@@ -35,15 +35,16 @@ oh-my-posh init pwsh --config 'C:\Users\ommar\AppData\Local\Programs\oh-my-posh\
 			#this changes the default name git assigns to your local branch from master to main
 	## @pre		: an existing repo on github.com to push to
 	## @param	: string, the SSH clone link of online repo
+	## @param	: string, the commit message for all files
 	## @post	: local repo is created and linked to an existing online repo
 	#>
-	function gitRepo([string]$repo)
+	function gitRepo([string]$repo, [string]$commit_message = "initial commits")
 	{
 		$git_prog = "C:\Program Files\Git\cmd\git.exe"
 		& $git_prog init
 		& $git_prog remote add origin $repo
 		& $git_prog add -A
-		& $git_prog commit -am "initial commits"
+		& $git_prog commit -am $commit_message
 		& $git_prog pull --rebase origin main
 		& $git_prog push -u origin main
 	}
