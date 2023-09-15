@@ -5,7 +5,7 @@ A collection of formatting and convenience aliases/functions to make my life usi
 
 In case of any incorrect or unconventional usage of Powershell coding, please feel free to message me on Discord: umbr_
 
-Yesterday was my first attempt at making a Powershell profile/shell customization in general. I am always welcome to learn more.
+August 31st was my first attempt at making a Powershell profile/shell customization in general. I am always welcome to learn more.
 
 Credits: 
 kali json is a small modification of the default kali json provided through oh my posh
