@@ -7,6 +7,14 @@ The following command will run the script on your machine.
 ```
 iwr "https://raw.githubusercontent.com/imELVEE/powershell-profile/refs/heads/main/initial-setup/setup.ps1" | iex
 ```
+If the above command is not running anything, try running without `| iex` to test that it can connect to the page containing the script. If all is well, it may be running the script that is being blocked.
+
+The following command will temporarily change the execution policy and may allow the script to run.
+
+```
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
 
 # Software Installed by the Script
 
