@@ -14,7 +14,13 @@ The following command will temporarily change the execution policy and may allow
 ```
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
-
+If it still does not run, you can choose to instead download the script and run it locally.
+```
+iwr "https://raw.githubusercontent.com/imELVEE/powershell-profile/refs/heads/main/initial-setup/setup.ps1" -OutFile "$env:TEMP\setup.ps1"
+```
+```
+. "$env:TEMP\setup.ps1"
+```
 
 # Software Installed by the Script
 
