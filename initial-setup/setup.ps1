@@ -18,18 +18,17 @@ function setup {
 
     # Install software using winget
     foreach ($package in $software) {
-    Write-Host "Installing $($package.Name)..."
-    try {
-        if ($package.Scope -eq "machine") {
-            winget install --id $($package.ID) --scope machine --silent --accept-package-agreements --accept-source-agreements 2>&1 | Tee-Object -Variable output
-        } else {
-            winget install --id $($package.ID) --scope user --silent --accept-package-agreements --accept-source-agreements 2>&1 | Tee-Object -Variable output
+        Write-Host "Installing $($package.Name)..."
+        try {
+            if ($package.Scope -eq "machine") {
+                winget install --id $($package.ID) --scope machine --silent --accept-package-agreements --accept-source-agreements 2>&1 | Tee-Object -Variable output
+            } else {
+                winget install --id $($package.ID) --scope user --silent --accept-package-agreements --accept-source-agreements 2>&1 | Tee-Object -Variable output
+            }
+        } catch {
+            Write-Error "Failed to install $($package.Name): $_"
         }
-    } catch {
-        Write-Error "Failed to install $($package.Name): $_"
     }
-}
-
 
     # MSYS2-specific setup for MinGW and GCC
     $msys2Shell = "C:\msys64\usr\bin\bash.exe"
@@ -51,6 +50,10 @@ function setup {
     } else {
         Write-Host "MSYS2 shell not found. Please ensure MSYS2 was installed correctly."
     }
+
+    # Validate installations
+    Write-Host "Validating installed packages..."
+    Validate-Installations $software
 
     Write-Host "Setup complete!"
 }
