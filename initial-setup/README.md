@@ -21,6 +21,9 @@ iwr "https://raw.githubusercontent.com/imELVEE/powershell-profile/refs/heads/mai
 ```
 . "$env:TEMP\setup.ps1"
 ```
+```
+setup
+```
 
 # Software Installed by the Script
 
