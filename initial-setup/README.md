@@ -12,7 +12,7 @@ iwr "https://raw.githubusercontent.com/imELVEE/powershell-profile/refs/heads/mai
 If you're version of Winget is below 1.6.3482, the CDN is out-of-date.  You can update Winget by following this [guide](https://github.com/microsoft/winget-cli/tree/master/doc/troubleshooting#executing-winget-exits-with-no-message). For speed's sake, you can also just run the below command.
 
 ```
-Add-AppxPackage https://aka.ms/getwinget
+winget source update
 ```
 
 If the above is not the issue, try running without `| iex` to test that it can connect to the page containing the script. If all is well, it may be running the script that is being blocked. If the problem is not your antivirus software, then:
