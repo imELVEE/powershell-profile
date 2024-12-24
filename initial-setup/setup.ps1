@@ -54,3 +54,27 @@ function setup {
 
     Write-Host "Setup complete!"
 }
+
+# Function to validate installations
+function Validate-Installations {
+    param ([Array]$software)
+
+    $notInstalled = @()
+
+    foreach ($package in $software) {
+        $installed = winget list --id $($package.ID) | Out-String
+        if ($installed -notmatch $package.ID) {
+            Write-Error "$($package.Name) was not installed."
+            $notInstalled += $package.Name
+        } else {
+            Write-Host "$($package.Name) is installed."
+        }
+    }
+
+    if ($notInstalled.Count -gt 0) {
+        Write-Host "The following packages were not installed:" -ForegroundColor Red
+        $notInstalled | ForEach-Object { Write-Host $_ -ForegroundColor Yellow }
+    } else {
+        Write-Host "All packages are successfully installed!" -ForegroundColor Green
+    }
+}
