@@ -40,19 +40,19 @@ function setup {
         }
     }
 
-    # MSYS2-specific setup for MinGW, GCC, G++, GNU Make, and GDB
+    # MSYS2-specific setup for toolchain
     $msys2Shell = "C:\msys64\usr\bin\bash.exe"
     if (Test-Path $msys2Shell) {
-        Write-Host "Configuring MSYS2 and installing GCC, G++, GNU Make, and GDB with pacman..."
+        Write-Host "Configuring MSYS2 and installing the development toolchain with pacman..."
 
         try {
             # Update pacman package database
             Write-Host "Updating MSYS2 packages..."
             & $msys2Shell -lc "pacman -Syu --noconfirm"
 
-            # Install GCC, G++, GNU Make, and GDB
-            Write-Host "Installing GCC, G++, GNU Make, and GDB..."
-            & $msys2Shell -lc "pacman -S --noconfirm mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-g++ mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-gdb"
+            # Install development toolchain (base-devel, GCC, G++, GNU Make, GDB)
+            Write-Host "Installing development toolchain..."
+            & $msys2Shell -lc "pacman -S --needed --noconfirm base-devel mingw-w64-ucrt-x86_64-toolchain"
 
             # Add MinGW to system PATH
             $mingwPath = "C:\msys64\mingw64\bin"
@@ -61,15 +61,18 @@ function setup {
                 Write-Host "Added MinGW to PATH. Please restart your terminal for changes to take effect."
             }
         } catch {
-            Write-Error "Failed to configure MSYS2 or install GCC/G++/GNU Make/GDB: $_"
+            Write-Error "Failed to configure MSYS2 or install the development toolchain: $_"
         }
     } else {
         Write-Host "MSYS2 shell not found. Please ensure MSYS2 was installed correctly."
     }
 
     # Validate installations
-    Write-Host "Validating installed packages..."
+    Write-Host "Validating installed packages and toolchain..."
     Validate-Installations $software
+
+    # Validate GCC, G++, GNU Make, and GDB
+    Validate-Toolchain
 
     Write-Host "Setup complete!"
 }
@@ -128,6 +131,19 @@ function Validate-Installations {
     }
 }
 
+# Function to validate GCC, G++, GNU Make, and GDB
+function Validate-Toolchain {
+    $tools = @("gcc", "g++", "make", "gdb")
+    foreach ($tool in $tools) {
+        Write-Host "Validating $tool..."
+        if (-not (Get-Command $tool -ErrorAction SilentlyContinue)) {
+            Write-Error "$tool is not installed or not available in PATH."
+        } else {
+            Write-Host "$tool is available in PATH."
+        }
+    }
+}
+
 # Function to add directories to PATH
 function Add-ToPath {
     param (
@@ -168,6 +184,6 @@ function Add-ToPath {
 # Function to refresh PATH in the current session
 function Refresh-Path {
     $env:PATH = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine) + ";" +
-                [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)
+                [System.Environment.GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)]
     Write-Host "Refreshed the current session's PATH."
 }
