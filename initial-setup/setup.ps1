@@ -4,19 +4,19 @@ function setup {
         @{ Name = "Firefox"; ID = "Mozilla.Firefox"; Scope = "user"; ValidationPath = @(
                 "$env:LOCALAPPDATA\Microsoft\WindowsApps\firefox.exe",
                 "$env:LOCALAPPDATA\Programs\Mozilla Firefox\firefox.exe"
-            ); AddToPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\" },
-        @{ Name = "Chrome"; ID = "Google.Chrome.EXE"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe"; AddToPath = "$env:LOCALAPPDATA\Google\Chrome\Application\" },
-        @{ Name = "Git"; ID = "Git.Git"; Scope = "machine"; ValidationCommand = "git"; AddToPath = "C:\Program Files\Git\cmd\" },
-        @{ Name = "CMake"; ID = "Kitware.CMake"; Scope = "machine"; ValidationCommand = "cmake"; AddToPath = "C:\Program Files\CMake\bin\" },
-        @{ Name = "MSYS2 (MinGW)"; ID = "MSYS2.MSYS2"; ValidationPath = "C:\msys64\usr\bin\bash.exe"; AddToPath = "C:\msys64\ucrt64\bin\" },
-        @{ Name = "Visual Studio"; ID = "Microsoft.VisualStudio.2022.Community"; Scope = "machine"; ValidationPath = "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe"; AddToPath = "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\" },
-        @{ Name = "Node.js"; ID = "OpenJS.NodeJS.LTS"; Scope = "machine"; ValidationCommand = "node"; AddToPath = "C:\Program Files\nodejs\" },
-        @{ Name = "Visual Studio Code"; ID = "Microsoft.VisualStudioCode"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe"; AddToPath = "$env:LOCALAPPDATA\Programs\Microsoft VS Code\" },
-        @{ Name = "7-Zip"; ID = "7zip.7zip"; Scope = "machine"; ValidationPath = "C:\Program Files\7-Zip\7z.exe"; AddToPath = "C:\Program Files\7-Zip\" },
-        @{ Name = "Eclipse Adoptium Temurin JDK 21"; ID = "EclipseAdoptium.Temurin.21.JDK"; Scope = "machine"; ValidationCommand = "java"; AddToPath = "C:\Program Files\Eclipse Adoptium\jdk-21\bin\" },
-        @{ Name = "OhMyPosh"; ID = "JanDeDobbeleer.OhMyPosh"; Scope = "user"; ValidationCommand = "oh-my-posh"; AddToPath = "$env:LOCALAPPDATA\Programs\oh-my-posh\" },
-        @{ Name = "Android Studio"; ID = "Google.AndroidStudio"; Scope = "machine"; ValidationPath = "C:\Program Files\Android\Android Studio\bin\studio64.exe" ; AddToPath = "C:\Program Files\Android\Android Studio\bin\"},
-        @{ Name = "Python"; ID = "Python.Python.3.11"; Scope = "machine"; ValidationCommand = "python"; AddToPath = "C:\Program Files\Python311\" }
+            ); AddToPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps" },
+        @{ Name = "Chrome"; ID = "Google.Chrome.EXE"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe" },
+        @{ Name = "Git"; ID = "Git.Git"; Scope = "machine"; ValidationCommand = "git"; AddToPath = "C:\Program Files\Git\cmd" },
+        @{ Name = "CMake"; ID = "Kitware.CMake"; Scope = "machine"; ValidationCommand = "cmake"; AddToPath = "C:\Program Files\CMake\bin" },
+        @{ Name = "MSYS2 (MinGW)"; ID = "MSYS2.MSYS2"; ValidationPath = "C:\msys64\usr\bin\bash.exe"; AddToPath = "C:\msys64\ucrt64\bin" },
+        @{ Name = "Visual Studio"; ID = "Microsoft.VisualStudio.2022.Community"; Scope = "machine"; ValidationPath = "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe" },
+        @{ Name = "Node.js"; ID = "OpenJS.NodeJS.LTS"; Scope = "machine"; ValidationCommand = "node"; AddToPath = "C:\Program Files\nodejs" },
+        @{ Name = "Visual Studio Code"; ID = "Microsoft.VisualStudioCode"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe"; AddToPath = "$env:LOCALAPPDATA\Programs\Microsoft VS Code" },
+        @{ Name = "7-Zip"; ID = "7zip.7zip"; Scope = "machine"; ValidationPath = "C:\Program Files\7-Zip\7z.exe"; AddToPath = "C:\Program Files\7-Zip" },
+        @{ Name = "Eclipse Adoptium Temurin JDK 21"; ID = "EclipseAdoptium.Temurin.21.JDK"; Scope = "machine"; ValidationCommand = "java"; AddToPath = "C:\Program Files\Eclipse Adoptium\jdk-21\bin" },
+        @{ Name = "OhMyPosh"; ID = "JanDeDobbeleer.OhMyPosh"; Scope = "user"; ValidationCommand = "oh-my-posh"; AddToPath = "$env:LOCALAPPDATA\Programs\oh-my-posh" },
+        @{ Name = "Android Studio"; ID = "Google.AndroidStudio"; Scope = "machine"; ValidationPath = "C:\Program Files\Android\Android Studio\bin\studio64.exe" },
+        @{ Name = "Python"; ID = "Python.Python.3.11"; Scope = "machine"; ValidationCommand = "python"; AddToPath = "C:\Program Files\Python311" }
     )
 
     # Install software using winget
