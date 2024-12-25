@@ -36,7 +36,7 @@ function setup {
 
         # Add to PATH if specified
         if ($package.AddToPath) {
-            Add-ToPath -Directory $package.AddToPath -Scope "Machine"
+            Add-ToPath -Directory $package.AddToPath -Scope ($package.Scope -or "Machine")
         }
     }
 
@@ -61,9 +61,6 @@ function Configure-MSYS2 {
 
         # Install base-devel and GCC toolchain
         & $msys2Shell -lc "pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain --noconfirm"
-
-        # Add ucrt64\bin to system PATH
-        Add-ToPath -Directory "C:\msys64\ucrt64\bin" -Scope "Machine"
 
         # Validate GCC, G++, and GDB installation
         foreach ($cmd in @("gcc", "g++", "gdb")) {
