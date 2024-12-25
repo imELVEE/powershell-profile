@@ -31,7 +31,7 @@ function setup {
 
         # Add to PATH if specified
         if ($package.AddToPath) {
-            Add-ToPath -Directory $package.AddToPath -Scope "Machine"
+            Add-ToPath -Directory $package.AddToPath -Scope $package.Scope
         }
     }
 
@@ -120,4 +120,14 @@ function Add-ToPath {
         $env:PATH = "$currentPath;$Directory"
         Write-Host "Added to Current Session PATH: $Directory"
     }
+
+    # Refresh the current session PATH
+    Refresh-Path
+}
+
+# Function to refresh PATH in the current session
+function Refresh-Path {
+    $env:PATH = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine) + ";" +
+                [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)
+    Write-Host "Refreshed the current session's PATH."
 }
