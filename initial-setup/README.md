@@ -57,7 +57,6 @@ These are installed for the current user only:
 These are installed for all users:
 - **Git**: Version control system.
 - **CMake**: Build system generator.
-- **MSYS2 (MinGW)**: Minimalist GNU for Windows, includes GCC/G++.
 - **Visual Studio Community 2022**: Integrated development environment.
 - **Node.js**: JavaScript runtime (includes `npm`).
 - **7-Zip**: File archiver and extractor.
@@ -67,3 +66,10 @@ These are installed for all users:
   
 - **Android Studio**: Android application development environment.
 - **Python 3.11**: Programming language runtime.
+
+
+## Non-Scoped Software
+These packages don't install if given a scope
+- **MSYS2 (MinGW)**: Minimalist GNU for Windows, includes GCC/G++.
+
+*This will install if given scope "user", but I was unsure if this would mess with the default installation, so I left it uncsoped*
