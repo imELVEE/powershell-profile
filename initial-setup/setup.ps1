@@ -1,14 +1,14 @@
 function setup {
     # Define software to install via winget
     $software = @(
-        @{ Name = "Firefox"; ID = "Mozilla.Firefox"; Scope = "user"; ValidationPath = "C:\Program Files\Mozilla Firefox\firefox.exe" },
-        @{ Name = "Chrome"; ID = "Google.Chrome"; Scope = "user"; ValidationPath = "C:\Program Files\Google\Chrome\Application\chrome.exe" },
+        @{ Name = "Firefox"; ID = "Mozilla.Firefox"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Programs\Mozilla Firefox\firefox.exe"; AddToPath = "$env:LOCALAPPDATA\Programs\Mozilla Firefox" },
+        @{ Name = "Chrome"; ID = "Google.Chrome"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe" },
         @{ Name = "Git"; ID = "Git.Git"; Scope = "machine"; ValidationCommand = "git"; AddToPath = "C:\Program Files\Git\cmd" },
         @{ Name = "CMake"; ID = "Kitware.CMake"; Scope = "machine"; ValidationCommand = "cmake"; AddToPath = "C:\Program Files\CMake\bin" },
         @{ Name = "MSYS2 (MinGW)"; ID = "MSYS2.MSYS2"; Scope = "machine"; ValidationPath = "C:\msys64\usr\bin\bash.exe"; AddToPath = "C:\msys64\mingw64\bin" },
         @{ Name = "Visual Studio"; ID = "Microsoft.VisualStudio.2022.Community"; Scope = "machine"; ValidationPath = "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe" },
         @{ Name = "Node.js"; ID = "OpenJS.NodeJS.LTS"; Scope = "machine"; ValidationCommand = "node"; AddToPath = "C:\Program Files\nodejs" },
-        @{ Name = "Visual Studio Code"; ID = "Microsoft.VisualStudioCode"; Scope = "user"; ValidationPath = "C:\Program Files\Microsoft VS Code\Code.exe" },
+        @{ Name = "Visual Studio Code"; ID = "Microsoft.VisualStudioCode"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe"; AddToPath = "$env:LOCALAPPDATA\Programs\Microsoft VS Code" },
         @{ Name = "7-Zip"; ID = "7zip.7zip"; Scope = "machine"; ValidationPath = "C:\Program Files\7-Zip\7z.exe"; AddToPath = "C:\Program Files\7-Zip" },
         @{ Name = "Eclipse Adoptium Temurin JDK 21"; ID = "EclipseAdoptium.Temurin.21.JDK"; Scope = "machine"; ValidationCommand = "java"; AddToPath = "C:\Program Files\Eclipse Adoptium\jdk-21\bin" },
         @{ Name = "OhMyPosh"; ID = "JanDeDobbeleer.OhMyPosh"; Scope = "user"; ValidationCommand = "oh-my-posh"; AddToPath = "$env:LOCALAPPDATA\Programs\oh-my-posh" },
