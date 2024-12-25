@@ -16,7 +16,7 @@ function setup {
         @{ Name = "Eclipse Adoptium Temurin JDK 21"; ID = "EclipseAdoptium.Temurin.21.JDK"; Scope = "machine"; ValidationCommand = "java"; AddToPath = "C:\Program Files\Eclipse Adoptium\jdk-21\bin\" },
         @{ Name = "OhMyPosh"; ID = "JanDeDobbeleer.OhMyPosh"; Scope = "user"; ValidationCommand = "oh-my-posh"; AddToPath = "$env:LOCALAPPDATA\Programs\oh-my-posh\" },
         @{ Name = "Android Studio"; ID = "Google.AndroidStudio"; Scope = "machine"; ValidationPath = "C:\Program Files\Android\Android Studio\bin\studio64.exe" ; AddToPath = "C:\Program Files\Android\Android Studio\bin\"},
-        @{ Name = "Python"; ID = "Python.Python.3.11"; Scope = "machine"; ValidationCommand = "python"; AddToPath = "C:\Program FilesPython311" }
+        @{ Name = "Python"; ID = "Python.Python.3.11"; Scope = "machine"; ValidationCommand = "python"; AddToPath = "C:\Program Files\Python311" }
     )
 
     # Install software using winget
