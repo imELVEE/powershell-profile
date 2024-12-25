@@ -36,7 +36,8 @@ function setup {
 
         # Add to PATH if specified
         if ($package.AddToPath) {
-            Add-ToPath -Directory $package.AddToPath -Scope ($package.Scope -or "Process")
+            $effectiveScope = if ([string]::IsNullOrEmpty($package.Scope)) { "Machine" } else { $package.Scope }
+            Add-ToPath -Directory $package.AddToPath -Scope $effectiveScope
         }
     }
 
