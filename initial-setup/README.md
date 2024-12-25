@@ -12,16 +12,13 @@ The following command will run the script on your machine:
 iwr "https://raw.githubusercontent.com/imELVEE/powershell-profile/refs/heads/main/initial-setup/setup.ps1" | iex
 ```
 
-OR you can instead download the script and run it locally (this is what I usually do):
+OR you can instead download the script and run it locally:
 
 ```
 iwr "https://raw.githubusercontent.com/imELVEE/powershell-profile/refs/heads/main/initial-setup/setup.ps1" -OutFile "$env:TEMP\setup.ps1"
 ```
 ```
 . "$env:TEMP\setup.ps1"
-```
-```
-setup
 ```
 
 # Troubleshooting
