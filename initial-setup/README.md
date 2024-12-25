@@ -37,7 +37,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 To see logs:
 ```
-winiget list logs
+winiget list --logs
 ```
 
 # Software Installed by the Script
