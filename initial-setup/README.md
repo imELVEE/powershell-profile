@@ -35,10 +35,9 @@ The following command will temporarily change the execution policy and may allow
 ```
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
-
-Location of winget logs should be:
+To see logs:
 ```
-%LOCALAPPDATA%\Packages\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\LocalState\DiagOutputDir
+winiget list logs
 ```
 
 # Software Installed by the Script
