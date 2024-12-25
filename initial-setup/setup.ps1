@@ -2,7 +2,7 @@ function setup {
     # Define software to install via winget
     $software = @(
         @{ Name = "Firefox"; ID = "Mozilla.Firefox"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Programs\Mozilla Firefox\firefox.exe"; AddToPath = "$env:LOCALAPPDATA\Programs\Mozilla Firefox" },
-        @{ Name = "Chrome"; ID = "Google.Chrome"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe" },
+        @{ Name = "Chrome"; ID = "Google.Chrome.EXE"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe" },
         @{ Name = "Git"; ID = "Git.Git"; Scope = "machine"; ValidationCommand = "git"; AddToPath = "C:\Program Files\Git\cmd" },
         @{ Name = "CMake"; ID = "Kitware.CMake"; Scope = "machine"; ValidationCommand = "cmake"; AddToPath = "C:\Program Files\CMake\bin" },
         @{ Name = "MSYS2 (MinGW)"; ID = "MSYS2.MSYS2"; Scope = "machine"; ValidationPath = "C:\msys64\usr\bin\bash.exe"; AddToPath = "C:\msys64\mingw64\bin" },
