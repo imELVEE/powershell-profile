@@ -36,7 +36,7 @@ function setup {
 
         # Add to PATH if specified
         if ($package.AddToPath) {
-            Add-ToPath -Directory $package.AddToPath -Scope ($package.Scope -or "Process")
+            Add-ToPath -Directory $package.AddToPath -Scope "Machine"
         }
     }
 
@@ -62,16 +62,74 @@ function Configure-MSYS2 {
         # Install base-devel and GCC toolchain
         & $msys2Shell -lc "pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain --noconfirm"
 
+        # Add ucrt64\bin to system PATH
+        Add-ToPath -Directory "C:\msys64\ucrt64\bin" -Scope "Machine"
+
         # Validate GCC, G++, and GDB installation
         foreach ($cmd in @("gcc", "g++", "gdb")) {
-            if (-not (Get-Command $cmd -ErrorAction SilentlyContinue)) {
-                Write-Error "$cmd is not available in PATH."
+            $command = & $msys2Shell -lc "which $cmd" | Out-String
+            if (-not $command) {
+                Write-Error "$cmd is not available or not installed correctly."
             } else {
                 Write-Host "$cmd is installed and available."
             }
         }
     } else {
         Write-Host "MSYS2 shell not found. Please ensure MSYS2 was installed correctly."
+    }
+}
+
+# Function to validate installations
+function Validate-Installations {
+    param ([Array]$software)
+
+    $notInstalled = @()
+
+    foreach ($package in $software) {
+        Write-Host "Validating $($package.Name)..."
+
+        # Check if the package appears in winget list
+        $installed = winget list --id $($package.ID) | Out-String
+        if ($installed -notmatch $package.ID) {
+            Write-Error "$($package.Name) is not installed (not found in winget list)."
+            $notInstalled += $package
+            continue
+        }
+
+        # Check for validation path (multiple possible paths)
+        if ($package.ValidationPath) {
+            $found = $false
+            foreach ($path in $package.ValidationPath) {
+                if (Test-Path $path) {
+                    Write-Host "$($package.Name) is installed at: $path"
+                    $found = $true
+                    break
+                }
+            }
+            if (-not $found) {
+                Write-Error "$($package.Name) is not fully installed. None of the validation paths were found."
+                $notInstalled += $package
+                continue
+            }
+        }
+
+        # Check for validation command (CLI availability)
+        if ($package.ValidationCommand) {
+            if (-not (Get-Command $package.ValidationCommand -ErrorAction SilentlyContinue)) {
+                Write-Error "$($package.Name) is not fully installed. Command $($package.ValidationCommand) not found in PATH."
+                $notInstalled += $package
+                continue
+            }
+        }
+
+        Write-Host "$($package.Name) is fully installed."
+    }
+
+    if ($notInstalled.Count -gt 0) {
+        Write-Host "The following packages are not fully installed:" -ForegroundColor Red
+        $notInstalled | ForEach-Object { Write-Host $_.Name -ForegroundColor Yellow }
+    } else {
+        Write-Host "All packages are fully installed!" -ForegroundColor Green
     }
 }
 
