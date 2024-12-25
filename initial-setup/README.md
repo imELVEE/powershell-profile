@@ -1,3 +1,7 @@
+### ToDo
+
+Add validation commands to some installation that addtopath (like devenv)
+
 # Description
 
 This file is for initial setup of a new machine, the script contains various softwares that I use often or may use semi-commonly. You will need to run Powershell as **administrator** because some packages install to a machine scope.
