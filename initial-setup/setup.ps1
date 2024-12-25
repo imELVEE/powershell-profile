@@ -3,17 +3,17 @@ function setup {
     $software = @(
         @{ Name = "Firefox"; ID = "Mozilla.Firefox"; Scope = "user"; ValidationPath = "C:\Program Files\Mozilla Firefox\firefox.exe" },
         @{ Name = "Chrome"; ID = "Google.Chrome"; Scope = "user"; ValidationPath = "C:\Program Files\Google\Chrome\Application\chrome.exe" },
-        @{ Name = "Git"; ID = "Git.Git"; Scope = "machine"; ValidationCommand = "git" },
-        @{ Name = "CMake"; ID = "Kitware.CMake"; Scope = "machine"; ValidationCommand = "cmake" },
-        @{ Name = "MSYS2 (MinGW)"; ID = "MSYS2.MSYS2"; Scope = "machine"; ValidationPath = "C:\msys64\usr\bin\bash.exe" },
+        @{ Name = "Git"; ID = "Git.Git"; Scope = "machine"; ValidationCommand = "git"; AddToPath = "C:\Program Files\Git\cmd" },
+        @{ Name = "CMake"; ID = "Kitware.CMake"; Scope = "machine"; ValidationCommand = "cmake"; AddToPath = "C:\Program Files\CMake\bin" },
+        @{ Name = "MSYS2 (MinGW)"; ID = "MSYS2.MSYS2"; Scope = "machine"; ValidationPath = "C:\msys64\usr\bin\bash.exe"; AddToPath = "C:\msys64\mingw64\bin" },
         @{ Name = "Visual Studio"; ID = "Microsoft.VisualStudio.2022.Community"; Scope = "machine"; ValidationPath = "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe" },
-        @{ Name = "Node.js"; ID = "OpenJS.NodeJS.LTS"; Scope = "machine"; ValidationCommand = "node" },
+        @{ Name = "Node.js"; ID = "OpenJS.NodeJS.LTS"; Scope = "machine"; ValidationCommand = "node"; AddToPath = "C:\Program Files\nodejs" },
         @{ Name = "Visual Studio Code"; ID = "Microsoft.VisualStudioCode"; Scope = "user"; ValidationPath = "C:\Program Files\Microsoft VS Code\Code.exe" },
-        @{ Name = "7-Zip"; ID = "7zip.7zip"; Scope = "machine"; ValidationPath = "C:\Program Files\7-Zip\7z.exe" },
-        @{ Name = "Eclipse Adoptium Temurin JDK 21"; ID = "EclipseAdoptium.Temurin.21.JDK"; Scope = "machine"; ValidationCommand = "java" },
-        @{ Name = "OhMyPosh"; ID = "JanDeDobbeleer.OhMyPosh"; Scope = "user"; ValidationCommand = "oh-my-posh" },
+        @{ Name = "7-Zip"; ID = "7zip.7zip"; Scope = "machine"; ValidationPath = "C:\Program Files\7-Zip\7z.exe"; AddToPath = "C:\Program Files\7-Zip" },
+        @{ Name = "Eclipse Adoptium Temurin JDK 21"; ID = "EclipseAdoptium.Temurin.21.JDK"; Scope = "machine"; ValidationCommand = "java"; AddToPath = "C:\Program Files\Eclipse Adoptium\jdk-21\bin" },
+        @{ Name = "OhMyPosh"; ID = "JanDeDobbeleer.OhMyPosh"; Scope = "user"; ValidationCommand = "oh-my-posh"; AddToPath = "$env:LOCALAPPDATA\Programs\oh-my-posh" },
         @{ Name = "Android Studio"; ID = "Google.AndroidStudio"; Scope = "machine"; ValidationPath = "C:\Program Files\Android\Android Studio\bin\studio64.exe" },
-        @{ Name = "Python"; ID = "Python.Python.3.11"; Scope = "machine"; ValidationCommand = "python" }
+        @{ Name = "Python"; ID = "Python.Python.3.11"; Scope = "machine"; ValidationCommand = "python"; AddToPath = "C:\Python311" }
     )
 
     # Install software using winget
@@ -27,6 +27,11 @@ function setup {
             }
         } catch {
             Write-Error "Failed to install $($package.Name): $_"
+        }
+
+        # Add to PATH if specified
+        if ($package.AddToPath) {
+            Add-ToPath -Directory $package.AddToPath -Scope "Machine"
         }
     }
 
@@ -80,5 +85,39 @@ function Validate-Installations {
         $notInstalled | ForEach-Object { Write-Host $_.Name -ForegroundColor Yellow }
     } else {
         Write-Host "All packages are fully installed!" -ForegroundColor Green
+    }
+}
+
+# Function to add directories to PATH
+function Add-ToPath {
+    param (
+        [string]$Directory,
+        [string]$Scope = "Machine" # Options: "Process", "User", "Machine"
+    )
+
+    # Check if the directory already exists in PATH
+    $currentPath = if ($Scope -eq "Machine") {
+        [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+    } elseif ($Scope -eq "User") {
+        [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::User)
+    } else {
+        $env:PATH
+    }
+
+    if ($currentPath -split ";" | Where-Object { $_ -eq $Directory }) {
+        Write-Host "Directory already exists in PATH: $Directory"
+        return
+    }
+
+    # Add the directory to PATH
+    if ($Scope -eq "Machine") {
+        [System.Environment]::SetEnvironmentVariable("Path", "$currentPath;$Directory", [System.EnvironmentVariableTarget]::Machine)
+        Write-Host "Added to System PATH: $Directory"
+    } elseif ($Scope -eq "User") {
+        [System.Environment]::SetEnvironmentVariable("Path", "$currentPath;$Directory", [System.EnvironmentVariableTarget]::User)
+        Write-Host "Added to User PATH: $Directory"
+    } else {
+        $env:PATH = "$currentPath;$Directory"
+        Write-Host "Added to Current Session PATH: $Directory"
     }
 }
