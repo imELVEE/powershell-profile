@@ -73,3 +73,6 @@ These packages don't install if given a scope
 - **MSYS2 (MinGW)**: Minimalist GNU for Windows, includes GCC/G++.
 
 *This will install if given scope "user", but I was unsure if this would mess with the default installation, so I left it uncsoped*
+
+## Software installed without Winget
+- GCC, GDB, G++ |through| MINGW64, MSYS64
