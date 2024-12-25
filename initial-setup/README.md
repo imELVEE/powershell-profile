@@ -1,12 +1,25 @@
 # Description
 
-This file is for initial setup of a new machine, the script contains various softwares that I use often or may use semi-commonly. Some may not be automatically added to PATH, so they need to be checked.
+This file is for initial setup of a new machine, the script contains various softwares that I use often or may use semi-commonly.
 
-The following command will run the script on your machine.
+The following command will run the script on your machine:
 
 ```
 iwr "https://raw.githubusercontent.com/imELVEE/powershell-profile/refs/heads/main/initial-setup/setup.ps1" | iex
 ```
+
+OR you can instead download the script and run it locally (this is what I usually do):
+
+```
+iwr "https://raw.githubusercontent.com/imELVEE/powershell-profile/refs/heads/main/initial-setup/setup.ps1" -OutFile "$env:TEMP\setup.ps1"
+```
+```
+. "$env:TEMP\setup.ps1"
+```
+```
+setup
+```
+
 # Troubleshooting
 
 If you're version of Winget is below 1.6.3482, the CDN is out-of-date.  You can update Winget by following this [guide](https://github.com/microsoft/winget-cli/tree/master/doc/troubleshooting#executing-winget-exits-with-no-message). For speed's sake, you can also just run the below command.
@@ -21,16 +34,6 @@ The following command will temporarily change the execution policy and may allow
 
 ```
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-```
-If it still does not run, you can choose to instead download the script and run it locally.
-```
-iwr "https://raw.githubusercontent.com/imELVEE/powershell-profile/refs/heads/main/initial-setup/setup.ps1" -OutFile "$env:TEMP\setup.ps1"
-```
-```
-. "$env:TEMP\setup.ps1"
-```
-```
-setup
 ```
 
 # Software Installed by the Script
