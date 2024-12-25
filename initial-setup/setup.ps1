@@ -1,7 +1,10 @@
 function setup {
     # Define software to install via winget
     $software = @(
-        @{ Name = "Firefox"; ID = "Mozilla.Firefox"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Programs\Mozilla Firefox\firefox.exe"; AddToPath = "$env:LOCALAPPDATA\Programs\Mozilla Firefox" },
+        @{ Name = "Firefox"; ID = "Mozilla.Firefox"; Scope = "user"; ValidationPath = @(
+                "$env:LOCALAPPDATA\Microsoft\WindowsApps\firefox.exe",
+                "$env:LOCALAPPDATA\Programs\Mozilla Firefox\firefox.exe"
+            ); AddToPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps" },
         @{ Name = "Chrome"; ID = "Google.Chrome.EXE"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe" },
         @{ Name = "Git"; ID = "Git.Git"; Scope = "machine"; ValidationCommand = "git"; AddToPath = "C:\Program Files\Git\cmd" },
         @{ Name = "CMake"; ID = "Kitware.CMake"; Scope = "machine"; ValidationCommand = "cmake"; AddToPath = "C:\Program Files\CMake\bin" },
@@ -59,10 +62,18 @@ function Validate-Installations {
             continue
         }
 
-        # Check for validation path (file/directory)
+        # Check for validation path (multiple possible paths)
         if ($package.ValidationPath) {
-            if (-not (Test-Path $package.ValidationPath)) {
-                Write-Error "$($package.Name) is not fully installed. Path $($package.ValidationPath) not found."
+            $found = $false
+            foreach ($path in $package.ValidationPath) {
+                if (Test-Path $path) {
+                    Write-Host "$($package.Name) is installed at: $path"
+                    $found = $true
+                    break
+                }
+            }
+            if (-not $found) {
+                Write-Error "$($package.Name) is not fully installed. None of the validation paths were found."
                 $notInstalled += $package
                 continue
             }
