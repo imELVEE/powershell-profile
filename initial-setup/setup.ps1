@@ -8,7 +8,7 @@ function setup {
         @{ Name = "Chrome"; ID = "Google.Chrome.EXE"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe" },
         @{ Name = "Git"; ID = "Git.Git"; Scope = "machine"; ValidationCommand = "git"; AddToPath = "C:\Program Files\Git\cmd" },
         @{ Name = "CMake"; ID = "Kitware.CMake"; Scope = "machine"; ValidationCommand = "cmake"; AddToPath = "C:\Program Files\CMake\bin" },
-        @{ Name = "MSYS2 (MinGW)"; ID = "MSYS2.MSYS2"; Scope = "machine"; ValidationPath = "C:\msys64\usr\bin\bash.exe"; AddToPath = "C:\msys64\mingw64\bin" },
+        @{ Name = "MSYS2 (MinGW)"; ID = "MSYS2.MSYS2"; ValidationPath = "C:\msys64\usr\bin\bash.exe"; AddToPath = "C:\msys64\mingw64\bin" },
         @{ Name = "Visual Studio"; ID = "Microsoft.VisualStudio.2022.Community"; Scope = "machine"; ValidationPath = "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe" },
         @{ Name = "Node.js"; ID = "OpenJS.NodeJS.LTS"; Scope = "machine"; ValidationCommand = "node"; AddToPath = "C:\Program Files\nodejs" },
         @{ Name = "Visual Studio Code"; ID = "Microsoft.VisualStudioCode"; Scope = "user"; ValidationPath = "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe"; AddToPath = "$env:LOCALAPPDATA\Programs\Microsoft VS Code" },
@@ -23,10 +23,12 @@ function setup {
     foreach ($package in $software) {
         Write-Host "Installing $($package.Name)..."
         try {
-            if ($package.Scope -eq "machine") {
+            if ($package.PSObject.Properties["Scope"] -and $package.Scope -eq "machine") {
                 winget install --id $($package.ID) --scope machine --accept-package-agreements --accept-source-agreements --verbose-logs
-            } else {
+            } elseif ($package.PSObject.Properties["Scope"] -and $package.Scope -eq "user") {
                 winget install --id $($package.ID) --scope user --accept-package-agreements --accept-source-agreements --verbose-logs
+            } else {
+                winget install --id $($package.ID) --accept-package-agreements --accept-source-agreements --verbose-logs
             }
         } catch {
             Write-Error "Failed to install $($package.Name): $_"
@@ -34,7 +36,7 @@ function setup {
 
         # Add to PATH if specified
         if ($package.AddToPath) {
-            Add-ToPath -Directory $package.AddToPath -Scope $package.Scope
+            Add-ToPath -Directory $package.AddToPath -Scope ($package.Scope -or "Process")
         }
     }
 
