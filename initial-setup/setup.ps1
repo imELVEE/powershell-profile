@@ -56,7 +56,7 @@ function Configure-MSYS2 {
     $msys2Shell = "C:\msys64\usr\bin\bash.exe"
     if (Test-Path $msys2Shell) {
         Write-Host "Configuring MSYS2 and installing base-devel and GCC toolchain with pacman..."
-        
+
         # Update pacman package database
         & $msys2Shell -lc "pacman -Syu --noconfirm"
 
@@ -66,17 +66,27 @@ function Configure-MSYS2 {
         # Add ucrt64\bin to system PATH
         Add-ToPath -Directory "C:\msys64\ucrt64\bin" -Scope "Machine"
 
-        # Validate GCC, G++, and GDB installation
-        foreach ($cmd in @("gcc", "g++", "gdb")) {
-            $command = & $msys2Shell -lc "which $cmd" | Out-String
-            if (-not $command) {
-                Write-Error "$cmd is not available or not installed correctly."
-            } else {
-                Write-Host "$cmd is installed and available."
-            }
-        }
+        # Validate installation of GCC toolchain commands
+        Validate-MSYSToolchain
     } else {
-        Write-Host "MSYS2 shell not found. Please ensure MSYS2 was installed correctly."
+        Write-Error "MSYS2 shell not found. Please ensure MSYS2 was installed correctly."
+    }
+}
+
+# Function to validate MSYS2 GCC toolchain
+function Validate-MSYSToolchain {
+    Write-Host "Validating GCC toolchain commands (gcc, g++, gdb)..."
+    $commands = @("gcc", "g++", "gdb")
+    foreach ($cmd in $commands) {
+        try {
+            $result = & $cmd --version
+            if ($result) {
+                Write-Host "$cmd is installed and available:"
+                Write-Host $result
+            }
+        } catch {
+            Write-Error "$cmd is not available or not installed correctly."
+        }
     }
 }
 
