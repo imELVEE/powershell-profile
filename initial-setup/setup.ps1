@@ -40,6 +40,33 @@ function setup {
         }
     }
 
+    # MSYS2-specific setup for MinGW, GCC, G++, GNU Make, and GDB
+    $msys2Shell = "C:\msys64\usr\bin\bash.exe"
+    if (Test-Path $msys2Shell) {
+        Write-Host "Configuring MSYS2 and installing GCC, G++, GNU Make, and GDB with pacman..."
+
+        try {
+            # Update pacman package database
+            Write-Host "Updating MSYS2 packages..."
+            & $msys2Shell -lc "pacman -Syu --noconfirm"
+
+            # Install GCC, G++, GNU Make, and GDB
+            Write-Host "Installing GCC, G++, GNU Make, and GDB..."
+            & $msys2Shell -lc "pacman -S --noconfirm mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-g++ mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-gdb"
+
+            # Add MinGW to system PATH
+            $mingwPath = "C:\msys64\mingw64\bin"
+            if (-not ($env:Path -split ";" | Where-Object { $_ -eq $mingwPath })) {
+                [Environment]::SetEnvironmentVariable("Path", "$($env:Path);$mingwPath", [System.EnvironmentVariableTarget]::Machine)
+                Write-Host "Added MinGW to PATH. Please restart your terminal for changes to take effect."
+            }
+        } catch {
+            Write-Error "Failed to configure MSYS2 or install GCC/G++/GNU Make/GDB: $_"
+        }
+    } else {
+        Write-Host "MSYS2 shell not found. Please ensure MSYS2 was installed correctly."
+    }
+
     # Validate installations
     Write-Host "Validating installed packages..."
     Validate-Installations $software
