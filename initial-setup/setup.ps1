@@ -181,6 +181,9 @@ function Add-ToPath {
     Refresh-Path
 }
 
+# Run Script
+setup
+
 # Function to refresh PATH in the current session
 function Refresh-Path {
     $env:PATH = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine) + ";" +
