@@ -2,7 +2,7 @@
 
 #oh-my-posh preferred json
 # json has been modified, path is absolute, not relative
-oh-my-posh init pwsh --config 'C:\Users\ommar\AppData\Local\Programs\oh-my-posh\themes\kali.omp.json' | Invoke-Expression
+oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/imELVEE/powershell-profile/refs/heads/main/kali.omp.json' | Invoke-Expression
 
 
 #######list of aliases I like using
